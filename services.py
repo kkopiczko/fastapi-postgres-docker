@@ -1,6 +1,7 @@
+from fastapi import Depends
 import database as _db
 import models as _models
-from schemas import ContactCreate
+import schemas as _schemas
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -17,3 +18,10 @@ def get_db():
         yield db
     finally:
         db.close()
+
+async def create_contact(input_contact_data: _schemas.ContactCreate, db: "Session") -> _schemas.Contact:
+    contact = _models.Contact(**input_contact_data.dict())
+    db.add(contact)
+    db.commit()
+    db.refresh(contact)
+    return _schemas.Contact.from_orm(contact)

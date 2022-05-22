@@ -10,6 +10,8 @@ class _ContactBase(BaseModel):
 class Contact(_ContactBase):
     id: int
     created_at: datetime
+    class Config:
+        orm_mode = True
 
 class ContactCreate(_ContactBase):
     pass
