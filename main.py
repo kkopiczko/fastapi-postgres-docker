@@ -19,7 +19,10 @@ async def get_contacts(db: Session=Depends(_services.get_db)):
 
 @app.get("/api/contacts/{id}", response_model=Contact)
 async def get_contact(id: int, db: Session=Depends(_services.get_db)):
-    return await _services.get_contact_by_id(id=id, db=db)
+    contact = await _services.get_contact_by_id(id=id, db=db)
+    if contact is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'A contact with id: {id} was not found')
+    return contact
 
 @app.delete("/api/contacts/{id}")
 async def delete_contact(id: int, db: Session=Depends(_services.get_db)):
