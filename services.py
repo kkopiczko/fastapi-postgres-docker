@@ -33,3 +33,7 @@ async def get_all_contacts(db: "Session") -> List[_schemas.Contact]:
 async def get_contact_by_id(id: int, db: "Session") -> _schemas.Contact:
     contact = db.query(_models.Contact).filter(_models.Contact.id == id).first()
     return contact
+
+async def delete_contact(contact: _models.Contact, db: "Session"):
+    db.delete(contact)
+    db.commit()
