@@ -16,3 +16,7 @@ async def create_contact(contact: ContactCreate, db: Session=Depends(_services.g
 @app.get("/api/contacts/", response_model=List[Contact])
 async def get_contacts(db: Session=Depends(_services.get_db)):
     return await _services.get_all_contacts(db=db)
+
+@app.get("/api/contacts/{id}", response_model=Contact)
+async def get_contact(id: int, db: Session=Depends(_services.get_db)):
+    return await _services.get_contact_by_id(id=id, db=db)

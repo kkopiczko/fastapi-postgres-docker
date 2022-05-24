@@ -29,3 +29,7 @@ async def create_contact(input_contact_data: _schemas.ContactCreate, db: "Sessio
 async def get_all_contacts(db: "Session") -> List[_schemas.Contact]:
     contacts = db.query(_models.Contact).all()
     return list(map(_schemas.Contact.from_orm, contacts))
+
+async def get_contact_by_id(id: int, db: "Session") -> _schemas.Contact:
+    contact = db.query(_models.Contact).filter(_models.Contact.id == id).first()
+    return contact
