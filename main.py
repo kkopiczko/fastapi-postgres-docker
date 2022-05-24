@@ -37,5 +37,5 @@ async def update_contact(id: int, contact_data: ContactCreate, db: Session=Depen
     contact = await _services.get_contact_by_id(id=id, db=db)
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'A contact with id: {id} was not found')
-    await _services.update_contact(contact_data=contact_data, db=db)
-    return "Successfully updated contact"
+    updated_contact = await _services.update_contact(contact_data=contact_data, contact=contact, db=db)
+    return updated_contact
