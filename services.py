@@ -2,7 +2,7 @@ from fastapi import Depends
 import database as _db
 import models as _models
 import schemas as _schemas
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
     from sqlalchemy.orm import Session
@@ -25,3 +25,7 @@ async def create_contact(input_contact_data: _schemas.ContactCreate, db: "Sessio
     db.commit()
     db.refresh(contact)
     return _schemas.Contact.from_orm(contact)
+
+async def get_all_contacts(db: "Session") -> List[_schemas.Contact]:
+    contacts = db.query(_models.Contact).all()
+    return list(map(_schemas.Contact.from_orm, contacts))
